@@ -1,4 +1,4 @@
-Enter file contents here### File to generate the data used in the examples. See also: Data_overview.docx
+### File to generate the data used in the examples. See also: Data_overview.docx
 
 ### Libraries:
 library(digest)		# for MD5 hashes for userID's
@@ -46,5 +46,6 @@ network <- generateNetwork(uid, .1, FALSE)
 # Dichotomous data
 # Categorical data
 # A data generating model based on groupings?
+
 
 
