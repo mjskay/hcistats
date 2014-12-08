@@ -1,4 +1,4 @@
-Enter file contents here# Functions to generate datasets
+# Functions to generate datasets
 generateUIDs <- function(n){
 	UID <- sapply(1:n, digest, algo="md5")
 	return(UID)
@@ -50,3 +50,45 @@ generatePsychometricData <- function(uid, mean=3, nvar=9, nfact=3, g=.3, r=.3, s
 heartRatePerMinute <- function(uid, months=4, startMonth=6){
 	minutes <- months * 31 *24 *60
 	data <- rep(NA, minutes*length(uid))
+	dc <- 1
+	x0 <- rnorm(length(uid), 80, 10)
+	for(i in 1:minutes){
+		str <- ""
+		for(j in 1:length(uid)){
+			str <- paste("uid=", uid[j], sep="")
+			str <- paste(str, ";time=", 
+					as.POSIXct(as.numeric(ISOdatetime(2014,startMonth,1,0,0,0)) + i*60 + runif(1,-30,30), origin="1970-01-01"),
+					sep="")
+			str <- paste(str, ";value=",rnorm(1, x0[j] + 10*sin(.5*i) + 20*cos(rnorm(1,0,.001)*i)), sep="")
+			
+			# store:
+			if(rbinom(1,1,(1-.0005))>0){ # a few missing obs
+				data[dc] <- str
+				dc <- dc+1
+			}
+		}
+	}
+	return(data[!is.na(data)])
+}
+
+generateGroups <- function(uid, no.groupings = 2, levels = c(2,10)){
+	dat <- ddply(data.frame(uid), .(uid), function(x, no, lev){
+		dat <- rep(NA, no)
+		for(i in 1:no){
+			dat[i] <- sample(1:lev[i],1)
+		}
+		return(data.frame(uid=x$uid, group=t(dat)))
+	}, no=no.groupings, lev=levels)
+	return(dat)
+}
+
+generateNetwork <- function(uid, p, directed=TRUE){
+	n <- length(uid)
+	m <- matrix(rbinom(n*n, 1, p), n, n)
+	if(!directed){
+		m[lower.tri(m)] <- t(m)[lower.tri(m)]
+	}
+	diag(m) <- 1
+	return(data.frame(uid, m))
+}
+	
