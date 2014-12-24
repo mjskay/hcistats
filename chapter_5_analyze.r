@@ -1,12 +1,14 @@
 ### analyze the data used in chapter 5
 library(coin)		#median_test, wilcox_test
 
+sink("analyses/chapter_5.txt")
+
 #load data tables
 monthly = read.csv("data/chapter_5_monthly_data.csv")
 annual = read.csv("data/chapter_5_annual_data.csv")
 
 
-
+#PART iv
 cat("\n\n# PART iv\n")
 cat("\n## Test for normality in each group\n") 
 d_ply(annual, ~ teamName, function(df) {
@@ -22,3 +24,7 @@ print(wilcox_test(annualIncome ~ teamName, data=annual))
 
 cat("\n## Permutation test for difference in salary between Team A and B\n")
 print(oneway_test(annualIncome ~ teamName, data=annual))
+
+
+
+sink()
