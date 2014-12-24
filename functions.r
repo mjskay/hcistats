@@ -7,6 +7,7 @@ generateUIDs <- function(n){
 
 assignTeam <- function(teams, data, p=rep(1/length(teams), length(teams))){
 	data$team <- rbinom(dim(data)[1], length(teams)-1, p)
+    data$teamName <- factor(data$team, labels=teams)
 	return(data)
 }
 
