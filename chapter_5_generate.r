@@ -25,8 +25,8 @@ annual = ddply(monthly, ~ uid + team + teamName, summarize, annualIncome=sum(mon
 
 
 #SAVE DATA TABLES
-write.csv(monthly, "data/chapter_5_monthly_data.csv")
-write.csv(annual, "data/chapter_5_annual_data.csv")
+write.csv(monthly, "data/chapter_5_monthly_data.csv", row.names=FALSE)
+write.csv(annual, "data/chapter_5_annual_data.csv", row.names=FALSE)
 
 
 
