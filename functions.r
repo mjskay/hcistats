@@ -31,7 +31,8 @@ responseTime <- function(t, data, m0=10, within=0, between=0, wb=.1, sigma=1){  
 		x  <- data.frame(x, responseTime=rnorm(length(x$uid), (m0+x$time*within+x$team*between+x$time*x$team*wb), 1))
 		return(x)
 	}, m0=2, within=within, between=between, wb=wb)
-	data$responseTime <- ifelse(data$responseTime < 0, 0, data$responseTime)
+    #make minimum response time non-zero (since zero response time is nonsensical)
+	data$responseTime <- pmax(data$responseTime, 0.1)
 	data <- data[order(data$team,data$time),]
 	return(data)
 }
