@@ -12,7 +12,7 @@ source("functions.R")
 set.seed(10)
 
 # Settings
-numberOfPersons <- 10
+numberOfPersons <- 75
 
 
 # Generate the UserID's
